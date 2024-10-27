@@ -1,0 +1,30 @@
+const Ticket = require("../models/Ticket");
+
+// @desc    Get all tickets
+// @route   GET /api/tickets
+// @access  Public
+const getTickets = async (req, res) => {
+  try {
+    const tickets = await Ticket.find({});
+    res.json(tickets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Create new ticket
+// @route   POST /api/tickets
+// @access  Public
+const createTicket = async (req, res) => {
+  const { from, to, price } = req.body;
+
+  try {
+    const ticket = new Ticket({ from, to, price });
+    const createdTicket = await ticket.save();
+    res.status(201).json(createdTicket);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { getTickets, createTicket };
